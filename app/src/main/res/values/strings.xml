@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">WeatherNews</string>
+    <string name="title_news">Lorem ipsum dolor sit amet, consectetur adipiscing elit</string>
+    <string name="release_date">2024-02-29</string>
+    <string name="source">By: BBC</string>
+
+    <string name="home">Home</string>
+    <string name="bookmark">Bookmark</string>
+    <string name="title">Title</string>
+    <string name="published_date">Published Date</string>
+    <string name="save_bookmark">Save Bookmark?</string>
+    <string name="no_data">Empty data</string>
+    <string name="something_wrong">Oops.. something went wrong.</string>
+</resources>
