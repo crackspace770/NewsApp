@@ -15,21 +15,20 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-
 class NewsAdapter : ListAdapter<NewsEntity, NewsAdapter.ListViewHolder>(DIFF_CALLBACK) {
 
     var onItemClick: ((NewsEntity) -> Unit?)? = null
 
     inner class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    private val bindings = NewsItemBinding.bind(itemView)
+        private val bindings = NewsItemBinding.bind(itemView)
+
         @SuppressLint("SetTextI18n")
         fun bind(data: NewsEntity) {
             with(bindings) {
-
                 val source = data.source
 
                 tvTitle.text = data.title
-                tvSource.text ="Source: $source"
+                tvSource.text = "Source: $source"
 
                 // Format the date string
                 val formattedDate = formatDate(data.publishedAt)
@@ -44,16 +43,14 @@ class NewsAdapter : ListAdapter<NewsEntity, NewsAdapter.ListViewHolder>(DIFF_CAL
                     // If urlToImage is null or empty, load a placeholder image
                     imgThumbnail.setImageResource(R.drawable.placeholder)
                 }
-
             }
         }
 
         init {
             bindings.root.setOnClickListener {
-                bindings.root.setOnClickListener { onItemClick?.invoke(getItem(adapterPosition)) }
+                onItemClick?.invoke(getItem(adapterPosition))
             }
         }
-
     }
 
     // Function to format date string
@@ -91,5 +88,4 @@ class NewsAdapter : ListAdapter<NewsEntity, NewsAdapter.ListViewHolder>(DIFF_CAL
             }
         }
     }
-
 }

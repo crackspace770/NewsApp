@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.webkit.WebViewClient
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import com.fajar.weathernews.R
 import com.fajar.weathernews.data.local.entity.NewsEntity
 import com.fajar.weathernews.data.utils.ViewModelFactory
 import com.fajar.weathernews.databinding.ActivityNewsDetailBinding
@@ -27,11 +29,40 @@ class NewsDetailActivity:AppCompatActivity() {
             binding.topAppBar.title = news.title
         }
 
+        binding.topAppBar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.action_bookmark -> {
+                    if (news != null) {
+                        viewModel.changeBookmark(news)
+                    }
+                    true
+                }
+                else -> false
+            }
+        }
+
+        viewModel.bookmarkStatus.observe(this) {status->
+            setBookmarkState(status)
+        }
+
         binding.webView.webViewClient = WebViewClient()
         if (news != null) {
             binding.webView.loadUrl(news.url.toString())
         }
 
+        if (news != null) {
+            viewModel.setNewsData(news)
+        }
+
+    }
+
+    private fun setBookmarkState(state:Boolean) {
+        val menuItem = binding.topAppBar.menu.findItem(R.id.action_bookmark)
+        if (state){
+            menuItem?.icon = ContextCompat.getDrawable(this, R.drawable.ic_bookmark_selected)
+        } else{
+            menuItem?.icon = ContextCompat.getDrawable(this, R.drawable.ic_bookmark_unselected)
+        }
     }
 
 

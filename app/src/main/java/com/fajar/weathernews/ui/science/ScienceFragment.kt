@@ -1,4 +1,4 @@
-package com.fajar.weathernews.ui.bookmark
+package com.fajar.weathernews.ui.science
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,24 +9,25 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fajar.weathernews.R
+import com.fajar.weathernews.data.Result
 import com.fajar.weathernews.data.adapter.NewsAdapter
 import com.fajar.weathernews.data.utils.HorizontalSpaceItemDecoration
 import com.fajar.weathernews.data.utils.ViewModelFactory
-import com.fajar.weathernews.databinding.FragmentBookmarkBinding
+import com.fajar.weathernews.databinding.FragmentScienceBinding
 import com.fajar.weathernews.ui.detail.NewsDetailActivity
+import com.fajar.weathernews.ui.tech.TechViewModel
 
+class ScienceFragment: Fragment() {
 
-class BookmarkFragment: Fragment() {
-
-    private lateinit var binding: FragmentBookmarkBinding
-    private val newsAdapter by lazy {NewsAdapter()}
+    private lateinit var binding: FragmentScienceBinding
+    private val newsAdapter by lazy { NewsAdapter() }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentBookmarkBinding.inflate(inflater, container, false)
+        binding = FragmentScienceBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -34,7 +35,7 @@ class BookmarkFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val factory: ViewModelFactory = ViewModelFactory.getInstance(requireContext())
-        val viewModel: BookmarkViewModel by viewModels {
+        val viewModel: ScienceViewModel by viewModels {
             factory
         }
 
@@ -44,30 +45,47 @@ class BookmarkFragment: Fragment() {
             startActivity(intent)
         }
 
-        viewModel.getBookmarkedNews().observe(viewLifecycleOwner) { bookmarkedNews ->
-            newsAdapter.submitList(bookmarkedNews)
-            binding.progressBar.visibility = View.GONE
-            binding.viewError.tvError.text = getString(R.string.no_data)
-            binding.viewError.root.visibility =
-                if (bookmarkedNews.isNotEmpty()) View.GONE else View.VISIBLE
+
+
+        viewModel.getScienceNews().observe(requireActivity()) { result ->
+
+            if (result != null) {
+                when (result) {
+                    is Result.Loading -> {
+                        binding.progressBar.visibility = View.VISIBLE
+                    }
+                    is Result.Success -> {
+                        binding.progressBar.visibility = View.GONE
+                        val newsData = result.data
+                        newsAdapter.submitList(newsData)
+                    }
+                    is Result.Error -> {
+                        binding.progressBar.visibility = View.GONE
+                        binding.viewError.root.visibility = View.VISIBLE
+                        binding.viewError.tvError.text = getString(R.string.something_wrong)
+                    }
+
+                }
+            }
+
         }
+
+
 
 
         val horizontalSpacingInPixels = resources.getDimensionPixelSize(R.dimen.vertical_spacing) // Define your desired spacing dimension
         val itemDecoration = HorizontalSpaceItemDecoration(horizontalSpacingInPixels)
-        binding.rvBookmark.addItemDecoration(itemDecoration)
+        binding.rvScienceNews.addItemDecoration(itemDecoration)
 
-        rvBookmark()
+        rvScienceNews()
 
     }
 
-    private fun rvBookmark() {
-        binding.rvBookmark.apply {
+    private fun rvScienceNews(){
+        binding.rvScienceNews.apply {
             adapter = newsAdapter // Change this line
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         }
     }
-
-
 
 }

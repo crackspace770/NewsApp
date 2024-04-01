@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import com.fajar.weathernews.data.adapter.NewsPagerAdapter
 import com.fajar.weathernews.databinding.FragmentHomeBinding
 import com.fajar.weathernews.ui.news.NewsFragment
+import com.fajar.weathernews.ui.science.ScienceFragment
 import com.fajar.weathernews.ui.tech.TechNewsFragment
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -29,6 +30,7 @@ class HomeFragment: Fragment() {
         val categoriesFragment = arrayListOf<Fragment>(
             NewsFragment(),
             TechNewsFragment(),
+            ScienceFragment()
 
         )
 
@@ -41,6 +43,7 @@ class HomeFragment: Fragment() {
                 when (position) {
                     0 -> tab.text = "Trending"
                     1 -> tab.text = "Tech"
+                    2 -> tab.text = "Science"
 
 
                 }

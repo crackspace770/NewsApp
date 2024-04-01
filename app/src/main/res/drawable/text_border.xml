@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <!-- Optional: Fill color of the TextView -->
+    <solid android:color="#FFFFFF"/>
+    <!-- Define the border properties -->
+    <stroke android:width="2dp" android:color="#000000"/>
+    <!-- Optional: If you want rounded corners -->
+    <corners android:radius="4dp"/>
+</shape>

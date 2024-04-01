@@ -13,10 +13,12 @@ class NewsRepository(
     private val newsDao: NewsDao
 ) {
 
+    private val apiKey = Constant.API_KEY
+
     fun getHeadlineNews(): LiveData<Result<List<NewsEntity>>> = liveData {
         emit(Result.Loading)
         try{
-            val response = apiService.getTopHeadline(Constant.API_KEY)
+            val response = apiService.getTopHeadline(apiKey)
             val articles = response.articles
             val newsList = articles.map { articles ->
                 NewsEntity(
@@ -39,7 +41,79 @@ class NewsRepository(
 
         emit(Result.Loading)
         try{
-            val response = apiService.getBusinessTopHeadline(Constant.API_KEY)
+            val response = apiService.getBusinessTopHeadline(apiKey)
+            val articles = response.articles
+            val newsList = articles.map { articles ->
+                NewsEntity(
+                    articles.source.name,
+                    articles.title,
+                    articles.publishedAt,
+                    articles.urlToImage,
+                    articles.url
+                )
+            }
+            emit(Result.Success(newsList))
+        }catch (e:Exception) {
+            Log.d("NewsRepository","getHeadlineNews:${e.message.toString()}")
+            emit(Result.Error(e.message.toString()))
+
+        }
+
+    }
+
+    fun getTechHeadline(): LiveData<Result<List<NewsEntity>>> = liveData {
+
+        emit(Result.Loading)
+        try{
+            val response = apiService.getTechTopHeadline(apiKey)
+            val articles = response.articles
+            val newsList = articles.map { articles ->
+                NewsEntity(
+                    articles.source.name,
+                    articles.title,
+                    articles.publishedAt,
+                    articles.urlToImage,
+                    articles.url
+                )
+            }
+            emit(Result.Success(newsList))
+        }catch (e:Exception) {
+            Log.d("NewsRepository","getHeadlineNews:${e.message.toString()}")
+            emit(Result.Error(e.message.toString()))
+
+        }
+
+    }
+
+    fun getScienceHeadline(): LiveData<Result<List<NewsEntity>>> = liveData {
+
+        emit(Result.Loading)
+        try{
+            val response = apiService.getScienceHeadline(apiKey)
+            val articles = response.articles
+            val newsList = articles.map { articles ->
+                NewsEntity(
+                    articles.source.name,
+                    articles.title,
+                    articles.publishedAt,
+                    articles.urlToImage,
+                    articles.url
+                )
+            }
+            emit(Result.Success(newsList))
+        }catch (e:Exception) {
+            Log.d("NewsRepository","getHeadlineNews:${e.message.toString()}")
+            emit(Result.Error(e.message.toString()))
+
+        }
+
+    }
+
+    fun getSearchNews(query:String): LiveData<Result<List<NewsEntity>>> = liveData {
+
+        emit(Result.Loading)
+        try{
+            val response = apiService.getSearchNews(query, apiKey)
             val articles = response.articles
             val newsList = articles.map { articles ->
                 NewsEntity(
