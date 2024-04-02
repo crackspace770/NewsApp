@@ -21,7 +21,7 @@ class UsNewsAdapter : ListAdapter<NewsEntity, UsNewsAdapter.ListViewHolder>(News
         private val bindings = UsNewsItemBinding.bind(itemView)
         fun bind(data: NewsEntity) {
             with(bindings) {
-                tvTitleNews.text = data.title
+                tvNewsTitle.text = data.title
 
                 if (!data.urlToImage.isNullOrEmpty()) {
                     Glide.with(itemView.context)
